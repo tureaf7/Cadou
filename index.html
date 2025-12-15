@@ -2,103 +2,93 @@
 <html lang="ro">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Surpriză pentru tine 💖</title>
+<title>La mulți ani ❤️</title>
 <style>
     body {
-        margin: 0;
-        padding: 0;
-        font-family: 'Arial', sans-serif;
-        overflow: hidden;
-        background: linear-gradient(135deg, #ffe6f0, #ffccff);
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #ff758c, #ff7eb3);
+        color: #fff;
         text-align: center;
-        color: #333;
+        padding: 30px;
     }
-
-    h1 {
-        font-size: 2.5em;
-        color: #ff4081;
-        margin-bottom: 20px;
-        opacity: 0;
-        animation: fadeIn 2s forwards;
-    }
-
-    p {
-        font-size: 1.2em;
-        line-height: 1.5em;
-        max-width: 90%;
-        opacity: 0;
-        animation: fadeIn 3s forwards;
-        animation-delay: 1s;
-    }
-
-    img {
-        max-width: 80%;
+    .container {
+        background: rgba(255,255,255,0.15);
+        padding: 25px;
         border-radius: 15px;
-        margin-bottom: 20px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        opacity: 0;
-        animation: fadeIn 4s forwards;
-        animation-delay: 0.5s;
+        max-width: 400px;
+        margin: auto;
     }
-
-    .heart {
-        color: red;
-        font-size: 2em;
-        animation: beat 1s infinite;
+    h1 { margin-bottom: 10px; }
+    button {
+        background: #fff;
+        color: #ff4f7a;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+        margin-top: 10px;
+        font-weight: bold;
     }
-
-    @keyframes beat {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.2); }
+    .quiz, .card { display: none; }
+    .card {
+        background: #fff;
+        color: #333;
+        padding: 20px;
+        border-radius: 15px;
+        margin-top: 20px;
     }
-
-    @keyframes fadeIn {
-        to { opacity: 1; }
-    }
-
-    /* Inimioare plutitoare */
-    .floating-heart {
-        position: absolute;
-        color: red;
-        font-size: 1.5em;
-        animation: floatUp 5s linear infinite;
-        opacity: 0.8;
-    }
-
-    @keyframes floatUp {
-        0% { transform: translateY(100vh) scale(0.8); opacity: 0.8; }
-        50% { opacity: 1; }
-        100% { transform: translateY(-50vh) scale(1.2); opacity: 0; }
+    .gift {
+        font-size: 24px;
+        margin-top: 10px;
+        color: #ff4f7a;
+        font-weight: bold;
     }
 </style>
 </head>
+
 <body>
 
-<h1>O surpriză pentru tine 💖</h1>
-<img src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=800&q=80" alt="Imagine drăguță">
-<p>Dragostea mea, fiecare zi cu tine e magică. 🥰<br>
-Sper ca această mică surpriză să-ți aducă zâmbetul pe buze! <span class="heart">❤️</span></p>
+<div class="container">
+    <h1>🎉 La mulți ani, iubirea mea! 🎉</h1>
+    <p>Am pregătit ceva special pentru tine ❤️  
+       Răspunde corect la quiz pentru a primi cadoul 🎁</p>
+
+    <button onclick="startQuiz()">Începe quiz-ul</button>
+
+    <div class="quiz" id="quiz">
+        <h2>❓ Unde ne-am cunoscut prima dată?</h2>
+        <button onclick="checkAnswer('a')">A) Online</button><br>
+        <button onclick="checkAnswer('b')">B) La o petrecere</button><br>
+        <button onclick="checkAnswer('c')">C) Prin prieteni</button><br>
+        <button onclick="checkAnswer('d')">D) La muncă</button>
+    </div>
+
+    <div class="card" id="card">
+        <h2>🎁 Card cadou pentru tine 🎁</h2>
+        <p><strong>De la:</strong> [Numele tău]</p>
+        <p><strong>Pentru:</strong> Cea mai minunată iubită ❤️</p>
+        <p><strong>Cadou:</strong></p>
+        <div class="gift">🎫 Cină romantică / excursie / cadou surpriză</div>
+        <p><em>Valabil oricând, cu multă dragoste 💕</em></p>
+    </div>
+</div>
 
 <script>
-    // Creare inimioare plutitoare
-    const colors = ['#ff4d6d','#ff99cc','#ff1a75','#ff66b3'];
-    function createHeart() {
-        const heart = document.createElement('div');
-        heart.className = 'floating-heart';
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.fontSize = (Math.random() * 30 + 15) + 'px';
-        heart.style.color = colors[Math.floor(Math.random() * colors.length)];
-        heart.innerText = '❤️';
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 5000);
+function startQuiz() {
+    document.querySelector('.quiz').style.display = 'block';
+}
+
+function checkAnswer(answer) {
+    // MODIFICĂ răspunsul corect aici
+    const correctAnswer = 'a';
+
+    if(answer === correctAnswer) {
+        document.querySelector('.quiz').style.display = 'none';
+        document.querySelector('.card').style.display = 'block';
+    } else {
+        alert('Hmm… mai încearcă 😄');
     }
-    setInterval(createHeart, 500);
+}
 </script>
 
 </body>
