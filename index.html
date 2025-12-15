@@ -2,92 +2,208 @@
 <html lang="ro">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>La mulți ani ❤️</title>
+
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #ff758c, #ff7eb3);
-        color: #fff;
-        text-align: center;
-        padding: 30px;
-    }
-    .container {
-        background: rgba(255,255,255,0.15);
-        padding: 25px;
-        border-radius: 15px;
-        max-width: 400px;
-        margin: auto;
-    }
-    h1 { margin-bottom: 10px; }
-    button {
-        background: #fff;
-        color: #ff4f7a;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 20px;
-        cursor: pointer;
-        margin-top: 10px;
-        font-weight: bold;
-    }
-    .quiz, .card { display: none; }
-    .card {
-        background: #fff;
-        color: #333;
-        padding: 20px;
-        border-radius: 15px;
-        margin-top: 20px;
-    }
-    .gift {
-        font-size: 24px;
-        margin-top: 10px;
-        color: #ff4f7a;
-        font-weight: bold;
-    }
+* {
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    margin: 0;
+    background: linear-gradient(180deg, #ff5f9e, #ff87ab);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.container {
+    width: 100%;
+    max-width: 360px;
+    padding: 20px;
+}
+
+.card-ui {
+    background: rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+}
+
+h1 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 15px;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    border-radius: 30px;
+    border: none;
+    background: white;
+    color: #ff4f88;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.quiz, .dm-card {
+    display: none;
+}
+
+/* CARD DM */
+.dm-card {
+    background: linear-gradient(135deg, #1a1a1a, #333);
+    border-radius: 18px;
+    padding: 20px;
+    margin-top: 15px;
+    text-align: left;
+    position: relative;
+    color: white;
+}
+
+.dm-logo {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.dm-chip {
+    width: 40px;
+    height: 30px;
+    background: gold;
+    border-radius: 6px;
+    margin: 15px 0;
+}
+
+.dm-number {
+    letter-spacing: 3px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.dm-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+/* EFECTE */
+.firework, .heart {
+    position: fixed;
+    pointer-events: none;
+    animation: explode 1s ease-out forwards;
+}
+
+.heart {
+    font-size: 20px;
+    animation: floatUp 2s ease-out forwards;
+}
+
+@keyframes explode {
+    from { transform: scale(0); opacity: 1; }
+    to { transform: scale(3); opacity: 0; }
+}
+
+@keyframes floatUp {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-150px); opacity: 0; }
+}
 </style>
 </head>
 
 <body>
 
 <div class="container">
-    <h1>🎉 La mulți ani, iubirea mea! 🎉</h1>
-    <p>Am pregătit ceva special pentru tine ❤️  
-       Răspunde corect la quiz pentru a primi cadoul 🎁</p>
+    <div class="card-ui">
 
-    <button onclick="startQuiz()">Începe quiz-ul</button>
+        <h1>🎉 La mulți ani, iubirea mea! 🎉</h1>
+        <p>Răspunde corect la întrebare și primești cadoul 🎁</p>
 
-    <div class="quiz" id="quiz">
-        <h2>❓ Unde ne-am cunoscut prima dată?</h2>
-        <button onclick="checkAnswer('a')">A) Online</button><br>
-        <button onclick="checkAnswer('b')">B) La o petrecere</button><br>
-        <button onclick="checkAnswer('c')">C) Prin prieteni</button><br>
-        <button onclick="checkAnswer('d')">D) La muncă</button>
-    </div>
+        <button onclick="startQuiz()">Începe</button>
 
-    <div class="card" id="card">
-        <h2>🎁 Card cadou pentru tine 🎁</h2>
-        <p><strong>De la:</strong> [Numele tău]</p>
-        <p><strong>Pentru:</strong> Cea mai minunată iubită ❤️</p>
-        <p><strong>Cadou:</strong></p>
-        <div class="gift">🎫 Cină romantică / excursie / cadou surpriză</div>
-        <p><em>Valabil oricând, cu multă dragoste 💕</em></p>
+        <div class="quiz" id="quiz">
+            <h2>❓ Unde ne-am cunoscut prima dată?</h2>
+            <button onclick="checkAnswer('a')">Online</button>
+            <button onclick="checkAnswer('b')">La o petrecere</button>
+            <button onclick="checkAnswer('c')">Prin prieteni</button>
+        </div>
+
+        <div class="dm-card" id="dmCard">
+            <div class="dm-logo">DM Gift Card</div>
+            <div class="dm-chip"></div>
+            <div class="dm-number">💳 **** **** **** 2025</div>
+            <div class="dm-info">
+                <div>
+                    <small>De la</small><br>
+                    ❤️ [Numele tău]
+                </div>
+                <div>
+                    <small>Cadou</small><br>
+                    💕 Surpriză
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
 <script>
 function startQuiz() {
-    document.querySelector('.quiz').style.display = 'block';
+    document.getElementById('quiz').style.display = 'block';
 }
 
 function checkAnswer(answer) {
-    // MODIFICĂ răspunsul corect aici
-    const correctAnswer = 'a';
+    const correct = 'a'; // MODIFICĂ AICI
 
-    if(answer === correctAnswer) {
-        document.querySelector('.quiz').style.display = 'none';
-        document.querySelector('.card').style.display = 'block';
+    if(answer === correct) {
+        document.getElementById('quiz').style.display = 'none';
+        document.getElementById('dmCard').style.display = 'block';
+        celebrate();
     } else {
-        alert('Hmm… mai încearcă 😄');
+        alert('Mai încearcă 😄');
     }
+}
+
+function celebrate() {
+    for(let i = 0; i < 20; i++) {
+        createFirework();
+        createHeart();
+    }
+}
+
+function createFirework() {
+    const fw = document.createElement('div');
+    fw.className = 'firework';
+    fw.style.left = Math.random() * window.innerWidth + 'px';
+    fw.style.top = Math.random() * window.innerHeight + 'px';
+    fw.style.background = 'gold';
+    fw.style.width = '8px';
+    fw.style.height = '8px';
+    fw.style.borderRadius = '50%';
+    document.body.appendChild(fw);
+
+    setTimeout(() => fw.remove(), 1000);
+}
+
+function createHeart() {
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.innerHTML = '💖';
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.style.bottom = '0px';
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 2000);
 }
 </script>
 
