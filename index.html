@@ -79,7 +79,7 @@
             border-radius: 15px;
             cursor: pointer;
             font-size: 1rem;
-            color: #000000; /* Text Negru */
+            color: #000000;
             font-weight: 500;
             transition: 0.2s;
         }
@@ -87,6 +87,13 @@
         .quiz-option:hover { background: #f8bbd0; }
 
         .hidden { display: none; }
+
+        /* Stil pentru Video/GIF Style */
+        #video-container video {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
 
         .voucher-img {
             width: 100%;
@@ -113,6 +120,14 @@
         <p id="progress" style="color: #888; font-size: 0.8rem;"></p>
         <h2 id="question"></h2>
         <div id="options"></div>
+    </div>
+
+    <div id="video-container" class="hidden">
+        <h2>Pregătește-te... 🥳</h2>
+        <video id="celebrationVideo" muted playsinline>
+            <source src="snaptik_7205327923677596934_v2 - copie.mp4" type="video/mp4">
+            Browserul tău nu suportă video.
+        </video>
     </div>
 
     <div id="result" class="hidden">
@@ -155,10 +170,8 @@
         const qData = questions[currentQuestion];
         document.getElementById('progress').innerText = `Întrebarea ${currentQuestion + 1} din 10`;
         document.getElementById('question').innerText = qData.q;
-        
         const optionsDiv = document.getElementById('options');
         optionsDiv.innerHTML = '';
-        
         qData.options.forEach((opt, index) => {
             const btn = document.createElement('button');
             btn.innerText = opt;
@@ -169,19 +182,40 @@
     }
 
     function handleAnswer(index) {
-        if (index === questions[currentQuestion].correct) {
-            score++;
-        }
+        if (index === questions[currentQuestion].correct) score++;
         currentQuestion++;
         if (currentQuestion < questions.length) {
             showQuestion();
         } else {
-            showResult();
+            playCelebration();
         }
     }
 
-    function showResult() {
+    // Funcția care rulează video-ul ca un GIF înainte de rezultat
+    function playCelebration() {
         document.getElementById('quiz').classList.add('hidden');
+        const videoCont = document.getElementById('video-container');
+        const video = document.getElementById('celebrationVideo');
+        
+        videoCont.classList.remove('hidden');
+        video.play();
+
+        // După ce se termină video-ul (sau după X secunde), arătăm rezultatul
+        video.onended = function() {
+            videoCont.classList.add('hidden');
+            showResult();
+        };
+
+        // Siguranță: dacă video-ul nu se termină singur, trecem la rezultat după 10 secunde
+        setTimeout(() => {
+            if (!videoCont.classList.contains('hidden')) {
+                videoCont.classList.add('hidden');
+                showResult();
+            }
+        }, 10000);
+    }
+
+    function showResult() {
         document.getElementById('result').classList.remove('hidden');
         document.getElementById('score-text').innerText = `Scor: ${score} din 10 răspunsuri corecte! 🎉`;
         triggerConfetti();
