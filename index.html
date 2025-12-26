@@ -16,7 +16,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #ffebee;
             margin: 0;
-            overflow: hidden; /* Prevenim scroll-ul în timpul animațiilor */
+            overflow: hidden; 
             display: flex;
             justify-content: center;
             align-items: center;
@@ -41,6 +41,7 @@
             100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
 
+        /* Containerul principal */
         .container {
             background: rgba(255, 255, 255, 0.95);
             padding: 30px;
@@ -51,38 +52,39 @@
             z-index: 10;
             text-align: center;
             position: relative;
-            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s ease-in-out;
         }
 
-        /* STIL SPECIAL PENTRU LAPTOP (VIDEO FULL) */
-        @media (min-width: 1024px) {
-            .container.fullscreen-mode {
-                max-width: 100vw !important;
-                width: 100vw !important;
-                height: 100vh !important;
-                border-radius: 0;
-                margin: 0;
-                padding: 0;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                background: black; /* Fundal negru pentru cinema effect */
-            }
+        /* MOD FULLSCREEN (ACTIVAT DIN JS) */
+        .container.fullscreen-mode {
+            max-width: 100vw !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: #000 !important; /* Negru pentru cinema */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
 
-            .container.fullscreen-mode #video-container {
-                width: 100%;
-                height: 100%;
-            }
+        .container.fullscreen-mode #video-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-            .container.fullscreen-mode #celebrationVideo {
-                width: 100%;
-                height: 100vh;
-                object-fit: contain; /* Păstrează proporția video-ului */
-                border: none;
-                border-radius: 0;
-                box-shadow: none;
-            }
+        .container.fullscreen-mode #celebrationVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Păstrează proporțiile originale ale video-ului */
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
         }
 
         h1 { color: var(--pink-primary); font-size: 1.8rem; }
@@ -113,7 +115,7 @@
             border-radius: 15px;
             cursor: pointer;
             font-size: 1rem;
-            color: #000000;
+            color: #000;
             font-weight: 500;
             transition: 0.2s;
         }
@@ -121,15 +123,6 @@
         .quiz-option:hover { background: #f8bbd0; }
 
         .hidden { display: none; }
-
-        #video-container { width: 100%; margin: 0; }
-
-        #celebrationVideo {
-            width: 100%;
-            border-radius: 20px;
-            border: 5px solid white;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
 
         .voucher-img {
             width: 100%;
@@ -234,7 +227,7 @@
         const videoCont = document.getElementById('video-container');
         const video = document.getElementById('celebrationVideo');
         
-        // ACTIVARE MOD FULLSCREEN (doar CSS-ul de laptop va reacționa)
+        // ACTIVARE FULLSCREEN PENTRU TOATE DISPOZITIVELE
         container.classList.add('fullscreen-mode');
         
         videoCont.classList.remove('hidden');
@@ -246,7 +239,7 @@
             showResult();
         };
 
-        // Fallback
+        // Fallback în caz de eroare la încărcare
         setTimeout(() => {
             if (!videoCont.classList.contains('hidden')) {
                 container.classList.remove('fullscreen-mode');
