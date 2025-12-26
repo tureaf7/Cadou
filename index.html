@@ -41,7 +41,6 @@
             100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
 
-        /* Containerul principal */
         .container {
             background: rgba(255, 255, 255, 0.95);
             padding: 30px;
@@ -52,10 +51,10 @@
             z-index: 10;
             text-align: center;
             position: relative;
-            transition: all 0.4s ease-in-out;
+            transition: opacity 0.8s ease, transform 0.8s ease, background 0.8s ease;
         }
 
-        /* MOD FULLSCREEN (ACTIVAT DIN JS) */
+        /* EFECT FADE PENTRU FULLSCREEN */
         .container.fullscreen-mode {
             max-width: 100vw !important;
             width: 100vw !important;
@@ -63,73 +62,55 @@
             border-radius: 0 !important;
             margin: 0 !important;
             padding: 0 !important;
-            background: #000 !important; /* Negru pentru cinema */
+            background: #000 !important;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            animation: fadeInFullscreen 1.2s forwards;
         }
 
-        .container.fullscreen-mode #video-container {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        @keyframes fadeInFullscreen {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
-        .container.fullscreen-mode #celebrationVideo {
+        #video-container { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+
+        #celebrationVideo {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Păstrează proporțiile originale ale video-ului */
-            border: none;
-            border-radius: 0;
-            box-shadow: none;
+            object-fit: contain;
+            opacity: 0;
+            transition: opacity 1s ease-in;
+        }
+
+        .video-visible #celebrationVideo {
+            opacity: 1;
         }
 
         h1 { color: var(--pink-primary); font-size: 1.8rem; }
         h2 { color: var(--dark-pink); font-size: 1.3rem; }
 
         .btn-main {
-            background: var(--pink-primary);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
+            background: var(--pink-primary); color: white; border: none;
+            padding: 15px 30px; border-radius: 50px; cursor: pointer;
+            font-size: 1.1rem; font-weight: bold; box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
             transition: 0.3s;
         }
 
-        .btn-main:hover { transform: scale(1.05); background: #f50057; }
-
         .quiz-option {
-            display: block;
-            width: 100%;
-            margin: 12px 0;
-            padding: 15px;
-            background: #fff;
-            border: 2px solid #f8bbd0;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 1rem;
-            color: #000;
-            font-weight: 500;
-            transition: 0.2s;
+            display: block; width: 100%; margin: 12px 0; padding: 15px;
+            background: #fff; border: 2px solid #f8bbd0; border-radius: 15px;
+            cursor: pointer; font-size: 1rem; color: #000; font-weight: 500; transition: 0.2s;
         }
 
         .quiz-option:hover { background: #f8bbd0; }
-
         .hidden { display: none; }
 
         .voucher-img {
-            width: 100%;
-            max-width: 350px;
-            border-radius: 15px;
-            margin: 20px 0;
-            border: 3px dashed var(--pink-primary);
+            width: 100%; max-width: 350px; border-radius: 15px;
+            margin: 20px 0; border: 3px dashed var(--pink-primary);
         }
     </style>
 </head>
@@ -144,9 +125,9 @@
 <div class="container" id="mainContainer">
     <div id="intro">
         <h1>La mulți ani! ❤️</h1>
-        <p>Ești gata?</p>
+        <p>Ești gata pentru quiz-ul „Ce aș alege?”</p>
         <p>Răspunde la cele 10 întrebări pentru a debloca surpriza!</p>
-        <button class="btn-main" onclick="startQuiz()">Davaj!</button>
+        <button class="btn-main" onclick="startQuiz()">Să începem! 🚀</button>
     </div>
 
     <div id="quiz" class="hidden">
@@ -166,7 +147,7 @@
         <p>Ești minunată! Indiferent de scor, meriți tot ce e mai bun. ❤️</p>
         <img src="https://via.placeholder.com/400x200/ff4081/ffffff?text=VOUCHER+CADOU" alt="Voucher" class="voucher-img">
         <br>
-        <a href="https://www.exemplu-magazin.ro" target="_blank" style="text-decoration: none;">
+        <a href="https://www.exemplu-magazin.ro" target="_blank">
             <button class="btn-main">Folosește Voucherul 🛒</button>
         </a>
     </div>
@@ -227,26 +208,21 @@
         const videoCont = document.getElementById('video-container');
         const video = document.getElementById('celebrationVideo');
         
-        // ACTIVARE FULLSCREEN PENTRU TOATE DISPOZITIVELE
+        // Pasul 1: Facem fundalul negru cu Fade
         container.classList.add('fullscreen-mode');
-        
         videoCont.classList.remove('hidden');
-        video.play();
+
+        // Pasul 2: Pornim video-ul și îi dăm fade in după ce fundalul e gata
+        setTimeout(() => {
+            container.classList.add('video-visible');
+            video.play();
+        }, 300);
 
         video.onended = function() {
-            container.classList.remove('fullscreen-mode');
+            container.classList.remove('fullscreen-mode', 'video-visible');
             videoCont.classList.add('hidden');
             showResult();
         };
-
-        // Fallback în caz de eroare la încărcare
-        setTimeout(() => {
-            if (!videoCont.classList.contains('hidden')) {
-                container.classList.remove('fullscreen-mode');
-                videoCont.classList.add('hidden');
-                showResult();
-            }
-        }, 120000); 
     }
 
     function showResult() {
