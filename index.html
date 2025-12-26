@@ -3,89 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La mulți ani, iubito!</title>
+    <title>La mulți ani, iubirea mea! ❤️</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
+        :root {
+            --pink-primary: #ff4081;
+            --pink-light: #fce4ec;
+            --text-dark: #333;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #fce4ec, #f8bbd0);
-            color: #880e4f;
+            background: #ffebee;
+            margin: 0;
+            overflow: hidden; /* Pentru inimioarele care plutesc */
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            text-align: center;
+            height: 100vh;
         }
+
+        /* Fundal cu inimioare animate */
+        .heart-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 64, 129, 0.3);
+            animation: float 6s linear infinite;
+            font-size: 20px;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
         .container {
-            background: white;
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            max-width: 400px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            max-width: 450px;
             width: 90%;
+            z-index: 10;
+            text-align: center;
+            position: relative;
+            animation: fadeIn 1s ease-out;
         }
-        h1 { color: #d81b60; }
-        button {
-            background: #d81b60;
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 { color: var(--pink-primary); margin-bottom: 20px; }
+        p { color: #555; line-height: 1.6; }
+
+        .btn-main {
+            background: var(--pink-primary);
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
+            padding: 15px 30px;
+            border-radius: 50px;
             cursor: pointer;
-            font-size: 1rem;
-            transition: transform 0.2s;
+            font-size: 1.1rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
+            transition: all 0.3s ease;
         }
-        button:hover { transform: scale(1.05); }
-        .hidden { display: none; }
+
+        .btn-main:hover {
+            transform: scale(1.05);
+            background: #e91e63;
+        }
+
+        /* Butoanele de quiz cu text negru */
         .quiz-option {
             display: block;
             width: 100%;
-            margin: 10px 0;
-            background: #f0f0f0;
-            border: 1px solid #ddd;
+            margin: 12px 0;
+            padding: 12px;
+            background: #fff;
+            border: 2px solid #f8bbd0;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #000000; /* Text NEGRU */
+            font-weight: 500;
+            transition: all 0.2s;
         }
-        .voucher-img { width: 100%; border-radius: 10px; margin-top: 15px; }
+
+        .quiz-option:hover {
+            background: #f8bbd0;
+            border-color: var(--pink-primary);
+        }
+
+        .hidden { display: none; }
+
+        .voucher-img {
+            width: 100%;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 3px dashed var(--pink-primary);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body>
 
+<div class="heart-bg" id="heartBg"></div>
+
 <div class="container">
     <div id="intro">
-        <h1>La mulți ani, iubita mea! ❤️</h1>
-        <p>Ești cea mai specială persoană din viața mea. Am pregătit o mică surpriză pentru tine, dar trebuie să demonstrezi că ne cunoști povestea!</p>
-        <button onclick="startQuiz()">Începe</button>
+        <h1>La mulți ani, Te iubesc! ❤️</h1>
+        <p>Am pregătit ceva special pentru tine, dar mai întâi să vedem cât de bine ne cunoști...</p>
+        <button class="btn-main" onclick="startQuiz()">Accept Provocarea 🎁</button>
     </div>
 
     <div id="quiz" class="hidden">
-        <h2 id="question">Întrebare...</h2>
+        <h2 id="question" style="color: #ad1457;">Se încarcă...</h2>
         <div id="options"></div>
+        <p id="feedback" style="font-size: 0.9rem; color: #d81b60; font-weight: bold;"></p>
     </div>
 
     <div id="result" class="hidden">
-        <h2>Felicitări! Ai răspuns corect la tot! 🎁</h2>
-        <img src="https://via.placeholder.com/300x150?text=VOUCHER+CADOU" class="voucher-img">
-        <br><br>
-        <a id="shopLink" href="https://www.exemplu-magazin.ro" target="_blank">
-            <button>Davaj</button>
+        <h2 style="color: #2e7d32;">Ai reușit! 🎉</h2>
+        <p>Știam eu că ești cea mai bună! Iată premiul tău:</p>
+        
+        <img src="https://via.placeholder.com/400x200/ff4081/ffffff?text=VOUCHERUL+TAU+CADOU" alt="Voucher" class="voucher-img">
+        
+        <br>
+        <a href="https://www.google.ro" target="_blank" style="text-decoration: none;">
+            <button class="btn-main">Mergi la Magazin 🛒</button>
         </a>
     </div>
 </div>
 
 <script>
+    // --- SETĂRI QUIZ ---
     const questions = [
         {
-            q: "Unde a fost prima noastră întâlnire?",
-            options: ["În parc", "La cinema", "La o cafea", "La restaurant"],
-            correct: 2 // Indexul răspunsului corect (începe de la 0)
+            q: "Unde am fost la prima noastră întâlnire oficială?",
+            options: ["În parcul mare", "La cafeneaua aia drăguță", "La film", "La o plimbare pe seară"],
+            correct: 1
         },
         {
-            q: "Care este mâncarea mea preferată pe care o gătești?",
-            options: ["Pastele", "Friptura", "Salata", "Clătitele"],
+            q: "Care este destinația noastră de vis pentru vacanță?",
+            options: ["Maldive", "Paris", "Roma", "Bora Bora"],
+            correct: 0
+        },
+        {
+            q: "Cine a spus primul 'Te iubesc'?",
+            options: ["Eu", "Tu", "Amândoi deodată", "A fost un moment magic"],
             correct: 0
         }
     ];
 
     let currentQuestion = 0;
+
+    // Generăm inimioare pe fundal
+    function createHearts() {
+        const bg = document.getElementById('heartBg');
+        for(let i=0; i<20; i++) {
+            setTimeout(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                bg.appendChild(heart);
+                
+                // Le ștergem după ce ies din ecran pentru performanță
+                setTimeout(() => heart.remove(), 6000);
+            }, i * 300);
+        }
+    }
+    setInterval(createHearts, 3000);
+    createHearts();
 
     function startQuiz() {
         document.getElementById('intro').classList.add('hidden');
@@ -95,35 +203,71 @@
 
     function showQuestion() {
         const qData = questions[currentQuestion];
-        document.getElementById('question').innerText = qData.q;
-        const optionsDiv = document.getElementById('options');
-        optionsDiv.innerHTML = '';
+        const qEl = document.getElementById('question');
+        qEl.style.opacity = 0;
         
-        qData.options.forEach((opt, index) => {
-            const btn = document.createElement('button');
-            btn.innerText = opt;
-            btn.className = 'quiz-option';
-            btn.onclick = () => checkAnswer(index);
-            optionsDiv.appendChild(btn);
-        });
+        setTimeout(() => {
+            qEl.innerText = qData.q;
+            qEl.style.opacity = 1;
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            
+            qData.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.innerText = opt;
+                btn.className = 'quiz-option';
+                btn.onclick = () => checkAnswer(index);
+                optionsDiv.appendChild(btn);
+            });
+        }, 300);
     }
 
     function checkAnswer(index) {
+        const feedback = document.getElementById('feedback');
         if (index === questions[currentQuestion].correct) {
+            feedback.innerText = "Corect! ❤️";
             currentQuestion++;
-            if (currentQuestion < questions.length) {
-                showQuestion();
-            } else {
-                showResult();
-            }
+            setTimeout(() => {
+                feedback.innerText = "";
+                if (currentQuestion < questions.length) {
+                    showQuestion();
+                } else {
+                    showResult();
+                }
+            }, 800);
         } else {
-            alert("Mai încearcă! Știu că poți ❤️");
+            feedback.innerText = "Nu e asta, mai gândește-te puțin... 😘";
         }
     }
 
     function showResult() {
         document.getElementById('quiz').classList.add('hidden');
         document.getElementById('result').classList.remove('hidden');
+        
+        // Efect de Confetti
+        var duration = 5 * 1000;
+        var end = Date.now() + duration;
+
+        (function frame() {
+            confetti({
+                particleCount: 3,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: ['#ff4081', '#ff80ab']
+            });
+            confetti({
+                particleCount: 3,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: ['#ff4081', '#ff80ab']
+            });
+
+            if (Date.now() < end) {
+                requestAnimationFrame(frame);
+            }
+        }());
     }
 </script>
 
