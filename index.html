@@ -124,7 +124,7 @@
 
     <div id="video-container" class="hidden">
         <h2>Pregătește-te... 🥳</h2>
-        <video id="celebrationVideo" muted playsinline>
+        <video id="celebrationVideo" playsinline>
             <source src="snaptik_7205327923677596934_v2 - copie.mp4" type="video/mp4">
             Browserul tău nu suportă video.
         </video>
@@ -206,7 +206,7 @@
             showResult();
         };
 
-        // Siguranță: dacă video-ul nu se termină singur, trecem la rezultat după 10 secunde
+        // Siguranță: dacă video-ul nu se termină singur, trecem la rezultat după 120 secunde
         setTimeout(() => {
             if (!videoCont.classList.contains('hidden')) {
                 videoCont.classList.add('hidden');
