@@ -1,210 +1,131 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>La mulți ani ❤️</title>
-
-<style>
-* {
-    box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
-}
-
-body {
-    margin: 0;
-    background: linear-gradient(180deg, #ff5f9e, #ff87ab);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-}
-
-.container {
-    width: 100%;
-    max-width: 360px;
-    padding: 20px;
-}
-
-.card-ui {
-    background: rgba(255,255,255,0.15);
-    border-radius: 20px;
-    padding: 25px;
-    text-align: center;
-    backdrop-filter: blur(10px);
-}
-
-h1 {
-    font-size: 22px;
-    margin-bottom: 10px;
-}
-
-p {
-    font-size: 15px;
-}
-
-button {
-    width: 100%;
-    padding: 14px;
-    margin-top: 10px;
-    border-radius: 30px;
-    border: none;
-    background: white;
-    color: #ff4f88;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.quiz, .dm-card {
-    display: none;
-}
-
-/* CARD DM */
-.dm-card {
-    background: linear-gradient(135deg, #1a1a1a, #333);
-    border-radius: 18px;
-    padding: 20px;
-    margin-top: 15px;
-    text-align: left;
-    position: relative;
-    color: white;
-}
-
-.dm-logo {
-    font-weight: bold;
-    font-size: 18px;
-}
-
-.dm-chip {
-    width: 40px;
-    height: 30px;
-    background: gold;
-    border-radius: 6px;
-    margin: 15px 0;
-}
-
-.dm-number {
-    letter-spacing: 3px;
-    font-size: 16px;
-    margin-bottom: 10px;
-}
-
-.dm-info {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-}
-
-/* EFECTE */
-.firework, .heart {
-    position: fixed;
-    pointer-events: none;
-    animation: explode 1s ease-out forwards;
-}
-
-.heart {
-    font-size: 20px;
-    animation: floatUp 2s ease-out forwards;
-}
-
-@keyframes explode {
-    from { transform: scale(0); opacity: 1; }
-    to { transform: scale(3); opacity: 0; }
-}
-
-@keyframes floatUp {
-    from { transform: translateY(0); opacity: 1; }
-    to { transform: translateY(-150px); opacity: 0; }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La mulți ani, iubito!</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+            color: #880e4f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 90%;
+        }
+        h1 { color: #d81b60; }
+        button {
+            background: #d81b60;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.2s;
+        }
+        button:hover { transform: scale(1.05); }
+        .hidden { display: none; }
+        .quiz-option {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+        }
+        .voucher-img { width: 100%; border-radius: 10px; margin-top: 15px; }
+    </style>
 </head>
-
 <body>
 
 <div class="container">
-    <div class="card-ui">
+    <div id="intro">
+        <h1>La mulți ani, iubita mea! ❤️</h1>
+        <p>Ești cea mai specială persoană din viața mea. Am pregătit o mică surpriză pentru tine, dar trebuie să demonstrezi că ne cunoști povestea!</p>
+        <button onclick="startQuiz()">Începe Quiz-ul</button>
+    </div>
 
-        <h1>🎉 La mulți ani, iubirea mea! 🎉</h1>
-        <p>Răspunde corect la întrebare și primești cadoul 🎁</p>
+    <div id="quiz" class="hidden">
+        <h2 id="question">Întrebare...</h2>
+        <div id="options"></div>
+    </div>
 
-        <button onclick="startQuiz()">Începe</button>
-
-        <div class="quiz" id="quiz">
-            <h2>❓ Unde ne-am cunoscut prima dată?</h2>
-            <button onclick="checkAnswer('a')">Online</button>
-            <button onclick="checkAnswer('b')">La o petrecere</button>
-            <button onclick="checkAnswer('c')">Prin prieteni</button>
-        </div>
-
-        <div class="dm-card" id="dmCard">
-            <div class="dm-logo">DM Gift Card</div>
-            <div class="dm-chip"></div>
-            <div class="dm-number">💳 **** **** **** 2025</div>
-            <div class="dm-info">
-                <div>
-                    <small>De la</small><br>
-                    ❤️ [Numele tău]
-                </div>
-                <div>
-                    <small>Cadou</small><br>
-                    💕 Surpriză
-                </div>
-            </div>
-        </div>
-
+    <div id="result" class="hidden">
+        <h2>Felicitări! Ai răspuns corect la tot! 🎁</h2>
+        <p>Iată cadoul tău:</p>
+        <img src="https://via.placeholder.com/300x150?text=VOUCHER+CADOU" alt="Voucher" class="voucher-img">
+        <br><br>
+        <a id="shopLink" href="https://www.exemplu-magazin.ro" target="_blank">
+            <button>Folosește Voucherul Aici</button>
+        </a>
     </div>
 </div>
 
 <script>
-function startQuiz() {
-    document.getElementById('quiz').style.display = 'block';
-}
+    const questions = [
+        {
+            q: "Unde a fost prima noastră întâlnire?",
+            options: ["În parc", "La cinema", "La o cafea", "La restaurant"],
+            correct: 2 // Indexul răspunsului corect (începe de la 0)
+        },
+        {
+            q: "Care este mâncarea mea preferată pe care o gătești?",
+            options: ["Pastele", "Friptura", "Salata", "Clătitele"],
+            correct: 0
+        }
+    ];
 
-function checkAnswer(answer) {
-    const correct = 'a'; // MODIFICĂ AICI
+    let currentQuestion = 0;
 
-    if(answer === correct) {
-        document.getElementById('quiz').style.display = 'none';
-        document.getElementById('dmCard').style.display = 'block';
-        celebrate();
-    } else {
-        alert('Mai încearcă 😄');
+    function startQuiz() {
+        document.getElementById('intro').classList.add('hidden');
+        document.getElementById('quiz').classList.remove('hidden');
+        showQuestion();
     }
-}
 
-function celebrate() {
-    for(let i = 0; i < 20; i++) {
-        createFirework();
-        createHeart();
+    function showQuestion() {
+        const qData = questions[currentQuestion];
+        document.getElementById('question').innerText = qData.q;
+        const optionsDiv = document.getElementById('options');
+        optionsDiv.innerHTML = '';
+        
+        qData.options.forEach((opt, index) => {
+            const btn = document.createElement('button');
+            btn.innerText = opt;
+            btn.className = 'quiz-option';
+            btn.onclick = () => checkAnswer(index);
+            optionsDiv.appendChild(btn);
+        });
     }
-}
 
-function createFirework() {
-    const fw = document.createElement('div');
-    fw.className = 'firework';
-    fw.style.left = Math.random() * window.innerWidth + 'px';
-    fw.style.top = Math.random() * window.innerHeight + 'px';
-    fw.style.background = 'gold';
-    fw.style.width = '8px';
-    fw.style.height = '8px';
-    fw.style.borderRadius = '50%';
-    document.body.appendChild(fw);
+    function checkAnswer(index) {
+        if (index === questions[currentQuestion].correct) {
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        } else {
+            alert("Mai încearcă! Știu că poți ❤️");
+        }
+    }
 
-    setTimeout(() => fw.remove(), 1000);
-}
-
-function createHeart() {
-    const heart = document.createElement('div');
-    heart.className = 'heart';
-    heart.innerHTML = '💖';
-    heart.style.left = Math.random() * window.innerWidth + 'px';
-    heart.style.bottom = '0px';
-    document.body.appendChild(heart);
-
-    setTimeout(() => heart.remove(), 2000);
-}
+    function showResult() {
+        document.getElementById('quiz').classList.add('hidden');
+        document.getElementById('result').classList.remove('hidden');
+    }
 </script>
 
 </body>
