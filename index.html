@@ -51,11 +51,9 @@
             z-index: 10;
             text-align: center;
             position: relative;
-            /* Tranzitie pentru fade in/out general */
             transition: opacity 1s ease, transform 1s ease;
         }
 
-        /* FULLSCREEN MODE */
         .container.fullscreen-mode {
             max-width: 100vw !important;
             width: 100vw !important;
@@ -83,15 +81,13 @@
             height: 100%;
             object-fit: contain;
             opacity: 0;
-            transition: opacity 1s ease; /* Gestioneaza si Fade In si Fade Out */
+            transition: opacity 1s ease;
         }
 
-        /* Clasa pentru Fade In */
         .video-visible #celebrationVideo {
             opacity: 1;
         }
 
-        /* Clasa pentru Fade Out (fortat prin JS la final) */
         .video-fade-out #celebrationVideo {
             opacity: 0 !important;
         }
@@ -152,7 +148,7 @@
     <div id="result" class="hidden">
         <h2 id="score-text"></h2>
         <p>Ești minunată! Indiferent de scor, meriți tot ce e mai bun. ❤️</p>
-        <img src="voucher_page-0001.jpg/400x200/ff4081/ffffff?text=VOUCHER+CADOU" alt="Voucher" class="voucher-img">
+        <img src="voucher_page-0001.jpg" alt="Voucher" class="voucher-img">
         <br>
         <a href="https://www.exemplu-magazin.ro" target="_blank">
             <button class="btn-main">Folosește Voucherul 🛒</button>
@@ -215,32 +211,36 @@
         const videoCont = document.getElementById('video-container');
         const video = document.getElementById('celebrationVideo');
         
-        // 1. Fade In Fullscreen
         container.classList.add('fullscreen-mode');
         videoCont.classList.remove('hidden');
 
         setTimeout(() => {
             container.classList.add('video-visible');
             video.play();
+
+            // LOGICA OPRIRE DUPA 10 SECUNDE
+            setTimeout(() => {
+                video.pause();
+                finalizaVideo();
+            }, 10000); 
+
         }, 300);
 
-        // 2. Logica pentru Fade Out la final
-        video.onended = function() {
-            // Adaugam clasa de Fade Out
+        function finalizaVideo() {
+            if (container.classList.contains('video-fade-out')) return;
             container.classList.add('video-fade-out');
-
-            // Asteptam 1 secunda (cat dureaza tranzitia CSS) apoi curatam
             setTimeout(() => {
                 container.classList.remove('fullscreen-mode', 'video-visible', 'video-fade-out');
                 videoCont.classList.add('hidden');
                 showResult();
             }, 1000);
-        };
+        }
+
+        video.onended = finalizaVideo;
     }
 
     function showResult() {
         document.getElementById('result').classList.remove('hidden');
-        // Adaugam un mic delay si la rezultate pentru a aparea frumos (fade in)
         document.getElementById('mainContainer').style.opacity = "0";
         setTimeout(() => {
             document.getElementById('mainContainer').style.opacity = "1";
