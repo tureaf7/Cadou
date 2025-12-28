@@ -208,36 +208,34 @@
         }
     }
 
-    function playCelebration() {
+        function playCelebration() {
         document.getElementById('quiz').classList.add('hidden');
         const container = document.getElementById('mainContainer');
         const videoCont = document.getElementById('video-container');
         const video = document.getElementById('celebrationVideo');
         
+        // 1. Trecem în modul fullscreen
         container.classList.add('fullscreen-mode');
         videoCont.classList.remove('hidden');
 
         setTimeout(() => {
             container.classList.add('video-visible');
             video.play();
-
-            // LOGICA OPRIRE DUPA 10 SECUNDE
-            setTimeout(() => {
-                video.pause();
-                finalizaVideo();
-            }, 10000); 
-
+            // Am eliminat setTimeout-ul de 10 secunde de aici
         }, 300);
 
-        function finalizaVideo() {
-            if (container.classList.contains('video-fade-out')) return;
+        // 2. Această funcție se va activa DOAR când videoclipul se termină de jucat
+        video.onended = function() {
             container.classList.add('video-fade-out');
+
             setTimeout(() => {
                 container.classList.remove('fullscreen-mode', 'video-visible', 'video-fade-out');
                 videoCont.classList.add('hidden');
                 showResult();
             }, 1000);
-        }
+        };
+    }
+
 
         video.onended = finalizaVideo;
     }
